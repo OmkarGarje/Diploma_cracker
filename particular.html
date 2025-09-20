@@ -63,16 +63,24 @@
   
 <script>
   (function() {
-    try {
-      var html = document.body.innerHTML;
-      var cleaned = html
-        .replace(/\{%\s*[\s\S]*?\s*%}/g, '')
-        .replace(/\{\{\s*[\s\S]*?\s*}}/g, '');
-      if (cleaned !== html) {
-        document.body.innerHTML = cleaned;
+    function stripTemplateTags(root) {
+      try {
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var re = /(\{\{[\s\S]*?\}\}|\{%[\s\S]*?%\})/g;
+        var node;
+        while ((node = walker.nextNode())) {
+          if (re.test(node.nodeValue)) {
+            node.nodeValue = node.nodeValue.replace(re, '').trim();
+          }
+        }
+      } catch (e) {
+        // no-op
       }
-    } catch (e) {
-      // no-op
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() { stripTemplateTags(document.body); });
+    } else {
+      stripTemplateTags(document.body);
     }
   })();
 </script>
