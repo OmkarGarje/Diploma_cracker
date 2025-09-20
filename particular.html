@@ -84,6 +84,117 @@
     }
   })();
 </script>
+
+<!-- Static Units section for GitHub Pages -->
+<div class="container" style="margin: 2rem auto; max-width: 1000px; padding: 0 1rem;">
+  <h2 style="color: #ddd; margin-bottom: 1rem;">Units and PPTs</h2>
+  <div id="subject-buttons" style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: .5rem;"></div>
+  <table id="subject-table" class="table table-dark table-striped" style="width: 100%; display: none;">
+    <thead>
+      <tr>
+        <th style="width: 15%">Unit</th>
+        <th>Topic / PPT</th>
+      </tr>
+    </thead>
+    <tbody id="subject-tbody"></tbody>
+  </table>
+  <div id="no-content" style="color:#aaa;">Select a subject above to view available PPTs.</div>
+</div>
+
+<script>
+  (function() {
+    // Static mapping of available PPTs discovered in media/unit_files
+    const SUBJECTS = {
+      "Java": [
+        { unit_name: "Unit 1", unit_topic: "Basic Syntactical Constructs in Java", unit_file: "media/unit_files/Unit-_1_Basic_Syntactical_Constructs_in_Java_final.pptx" },
+        { unit_name: "Unit 2", unit_topic: "Derived Syntactical Constructs in Java", unit_file: "media/unit_files/Unit-_2_Derived_Syntactical_Constructs_in_Java.pptx" },
+        { unit_name: "Unit 3", unit_topic: "Inheritance, Interface and Package", unit_file: "media/unit_files/Unit-3__InheritanceInterface_and_Package1.pptx" },
+        { unit_name: "Unit 4", unit_topic: "Exception Handling", unit_file: "media/unit_files/Unit_4-Exception_Handling.pptx" },
+        { unit_name: "Unit 5", unit_topic: "Java Applets & Graphics Programming", unit_file: "media/unit_files/Unit-5_JAVA_APPLETS__GRAPHICS_PROGRAMMING20_MARKS.pptx" },
+        { unit_name: "Unit 6", unit_topic: "Managing Input/Output File in Java", unit_file: "media/unit_files/Unit-6_Managing_Input_output_file_in_Java.pptx" }
+      ],
+      "JavaScript": [
+        { unit_name: "Unit 1", unit_topic: "JavaScript Unit 1", unit_file: "media/unit_files/Unit-1_JS.pptx" },
+        { unit_name: "Unit 2", unit_topic: "JavaScript Unit 2", unit_file: "media/unit_files/Unit-2_JS.pptx" },
+        { unit_name: "Unit 3", unit_topic: "JavaScript Unit 3", unit_file: "media/unit_files/Unit-3_JS.pptx" },
+        { unit_name: "Unit 5", unit_topic: "JavaScript Unit 5", unit_file: "media/unit_files/Unit-5_JS.pptx" },
+        { unit_name: "Unit 6", unit_topic: "JavaScript Unit 6", unit_file: "media/unit_files/Unit-6_JS.pptx" }
+      ],
+      "Python": [
+        { unit_name: "Unit 3", unit_topic: "Data Structures in Python", unit_file: "media/unit_files/Unit-3_Data_structures_in_python.pptx" },
+        { unit_name: "Unit 5", unit_topic: "OOP in Python", unit_file: "media/unit_files/Unit-5_OOP_IN_python.pptx" }
+      ],
+      "Operating System": [
+        { unit_name: "Unit 1", unit_topic: "Overview of OS", unit_file: "media/unit_files/Unit-1_Overview_of_OS.pptx" },
+        { unit_name: "Unit 2", unit_topic: "Services & Components of OS", unit_file: "media/unit_files/Unit-2_Services__Components_of_OS.pptx" },
+        { unit_name: "Unit 4", unit_topic: "CPU Scheduling Algorithms", unit_file: "media/unit_files/Unit-4_CPU_Scheduling_Algo.pptx" },
+        { unit_name: "Unit 6", unit_topic: "File Management", unit_file: "media/unit_files/Unit-6_File_Management.pptx" }
+      ],
+      "Software Testing": [
+        { unit_name: "Unit 2", unit_topic: "Types of Testing Methods", unit_file: "media/unit_files/Unit-2_Types_of_testing_methods.pptx" },
+        { unit_name: "Unit 3", unit_topic: "Test Management", unit_file: "media/unit_files/Unit-3_Test_Management.pptx" },
+        { unit_name: "Unit 4", unit_topic: "Defect Management", unit_file: "media/unit_files/Unit-4_Defect_Management.pptx" }
+      ],
+      "Emerging Trends in IT": [
+        { unit_name: "Unit 1", unit_topic: "ETI Unit 1", unit_file: "media/unit_files/ETI_Unit-1.pptx" },
+        { unit_name: "Unit 2", unit_topic: "ETI Unit 2", unit_file: "media/unit_files/ETI_Unit-2.pptx" },
+        { unit_name: "Unit 3", unit_topic: "ETI Unit 3", unit_file: "media/unit_files/ETI_Unit-3.pptx" },
+        { unit_name: "Unit 4", unit_topic: "ETI Unit 4", unit_file: "media/unit_files/ETI_Unit-4.pptx" },
+        { unit_name: "Unit 5", unit_topic: "ETI Unit 5", unit_file: "media/unit_files/ETI_Unit-5.pptx" },
+        { unit_name: "Unit 6", unit_topic: "ETI Unit 6", unit_file: "media/unit_files/ETI_Unit-6.pptx" }
+      ],
+      "DCC": [
+        { unit_name: "Unit 1", unit_topic: "DCC Unit 1", unit_file: "media/unit_files/Unit-1_DCC.pptx" },
+        { unit_name: "Unit 2", unit_topic: "DCC Unit 2", unit_file: "media/unit_files/Unit-2_DCC.pptx" },
+        { unit_name: "Unit 3", unit_topic: "DCC Unit 3", unit_file: "media/unit_files/Unit-3_DCC.pptx" },
+        { unit_name: "Unit 4", unit_topic: "DCC Unit 4", unit_file: "media/unit_files/Unit-4_DCC.pptx" }
+      ]
+    };
+
+    const btnWrap = document.getElementById('subject-buttons');
+    const table = document.getElementById('subject-table');
+    const tbody = document.getElementById('subject-tbody');
+    const empty = document.getElementById('no-content');
+
+    function render(subject) {
+      const items = SUBJECTS[subject] || [];
+      if (!items.length) {
+        table.style.display = 'none';
+        empty.style.display = '';
+        empty.textContent = 'No PPTs available for ' + subject + ' yet.';
+        return;
+      }
+      tbody.innerHTML = '';
+      items.forEach(it => {
+        const tr = document.createElement('tr');
+        const td1 = document.createElement('td');
+        const td2 = document.createElement('td');
+        td1.textContent = it.unit_name || '';
+        const a = document.createElement('a');
+        a.href = it.unit_file;
+        a.textContent = it.unit_topic || 'Open PPT';
+        a.target = '_blank';
+        td2.appendChild(a);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tbody.appendChild(tr);
+      });
+      empty.style.display = 'none';
+      table.style.display = '';
+    }
+
+    // Build subject buttons
+    Object.keys(SUBJECTS).forEach(name => {
+      const b = document.createElement('button');
+      b.textContent = name;
+      b.className = 'btn btn-sm btn-primary';
+      b.style.marginRight = '.25rem';
+      b.onclick = () => render(name);
+      btnWrap.appendChild(b);
+    });
+  })();
+</script>
+
 </body>
 
 </html>
