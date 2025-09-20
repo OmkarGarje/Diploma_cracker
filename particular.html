@@ -61,6 +61,21 @@
   </ol>
 
   
+<script>
+  (function() {
+    try {
+      var html = document.body.innerHTML;
+      var cleaned = html
+        .replace(/\{%\s*[\s\S]*?\s*%}/g, '')
+        .replace(/\{\{\s*[\s\S]*?\s*}}/g, '');
+      if (cleaned !== html) {
+        document.body.innerHTML = cleaned;
+      }
+    } catch (e) {
+      // no-op
+    }
+  })();
+</script>
 </body>
 
 </html>
