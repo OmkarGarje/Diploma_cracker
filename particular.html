@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DC-Coding</title>
-  <link rel="stylesheet" href="css/particular.css">
+  <link rel="stylesheet" href="{% static 'css/particular.css' %}">
 </head>
 
 <body>
@@ -18,11 +19,11 @@
     </div>
     <nav class="nav-bar">
       <ul>
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="./topper.html">Topper Bot</a></li>
-        <li><a href="./coding.html">Coding Subjects</a></li>
-        <li><a href="./theory.html">Theory Subjects</a></li>
-        <li><a href="./timer.html">Study timer</a></li>
+        <li><a href="{% url 'index' %}" class="active">Home</a></li>
+        <li><a href="{% url 'topper' %}">Topper Bot</a></li>
+        <li><a href="{% url 'coding' %}">Coding Subjects</a></li>
+        <li><a href="{% url 'theory' %}">Theory Subjects</a></li>
+        <li><a href="{% url 'timer' %}">Study timer</a></li>
       </ul>
     </nav>
   </header>
@@ -35,7 +36,7 @@
   </script>
 
 
-  <h2>JAVA</h2>
+  <h2>{{ sub_name|upper }}</h2>
 
   <table>
     <thead>
@@ -45,35 +46,19 @@
       </tr>
     </thead>
     <tbody>
+      {% for unit in all_units_of_given_subject %}
       <tr>
-        <td>Unit-1</td>
-        <td><a href="assets/Unit- 1 Basic Syntactical Constructs in Java final.pptx">Basics in Java</a></td>
+        <td>{{ unit.unit_name }}</td>
+        <td><a href="{{ unit.unit_file.url }}">{{ unit.unit_topic }}</a></td>
       </tr>
-      <tr>
-        <td>Unit-2</td>
-        <td><a href="assets/Unit- 2 Derived Syntactical Constructs in Java.pptx">Constructors in Java</a></td>
-      </tr>
-      <tr>
-        <td>Unit-3</td>
-        <td><a href="assets/Unit-3  Inheritance,Interface and Package1.pptx">Inheritance, Interface & packages</a></td>
-      </tr>
-      <tr>
-        <td>Unit-4</td>
-        <td><a href="assets/Unit 4-Exception Handling.pptx">Exception Handling</a></td>
-      </tr>
-      <tr>
-        <td>Unit-5</td>
-        <td><a href="assets/Unit-5 JAVA APPLETS & GRAPHICS PROGRAMMING(20 MARKS).pptx">Java Applet</a></td>
-      </tr>
-      <tr>
-        <td>Unit-6</td>
-        <td><a href="assets/Unit-6 Managing Input output file in Java.pptx">I/O files in Java</a></td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
 
   <ol>
-    <li><a href="">IMP - QUESTIONS PDF</a></li>
+    {% if imp_questions %}
+    <li><a href="{{ imp_questions.question_file.url }}">IMP - QUESTIONS PDF</a></li>
+    {% endif %}
   </ol>
 
   
