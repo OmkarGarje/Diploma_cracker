@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC-Timer</title>
+    <link rel="stylesheet" href="css/timer.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><span>D</span>iploma <span>C</span>racker</div>
+         <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+         </div>
+         <nav class="nav-bar">
+            <ul>
+                <li>
+                    <a href="./index.html">Home</a>
+                </li>
+                <li>
+                    <a href="./topper.html">Topper Bot</a>
+                </li>
+                <li>
+                    <a href="./coding.html">Coding Subjects</a>
+                </li>
+                <li>
+                    <a href="./theory.html">Theory Subjects</a>
+                </li>
+                <li>
+                    <a href="" class="active">Study timer</a>
+                </li>
+            </ul>
+         </nav>
+    </header>
+    <script>
+        hamburger = document.querySelector(".hamburger");
+        hamburger.onclick = function() {
+            navBar = document.querySelector(".nav-bar");
+            navBar.classList.toggle("active");
+        }
+    </script>
+
+          <div class="container-fluid">
+            <div class="row" style="height: 10vh; background-color:  #1c1a2e">
+                <span></span>
+            </div>
+            <div class="row" style="height: 15vh; background-color:  #1c1a2e" >
+              <span>DON'T <span style="color: red;"> DISTRACT </span> YOURSELF.</span>
+            
+            </div>
+
+            <div class="row" style="height: 70vh; background-color:  #1c1a2e" >
+         
+               <!-- TIMER CODE  -->
+               <div class="timer-container">
+                <h1 style="color: white;">Study Timer</h1>
+                <div id="timer">25:00</div>
+                <div class="button-container">
+                    <button id="startPause" class="btn" style="color: aliceblue;">Start</button>
+                    <button id="reset" class="btn"  style="color: aliceblue;">Reset</button>
+                </div>
+                <br>
+                <span>“To change your life, you must first change your day.”</span>
+            </div>
+            </div>
+          </div>
+               
+          
+          
+          <!-- JAVASCRIPT -->
+          <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const timerDisplay = document.getElementById('timer');
+    const startPauseButton = document.getElementById('startPause');
+    const resetButton = document.getElementById('reset');
+
+    let studyTime = 25 * 60; // 25 minutes in seconds
+    let timer;
+    let isRunning = false;
+
+    function updateTimerDisplay() {
+        let minutes = Math.floor(studyTime / 60);
+        let seconds = studyTime % 60;
+        timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function startPauseTimer() {
+        if (!isRunning) {
+            isRunning = true;
+            startPauseButton.textContent = 'Pause';
+            timer = setInterval(function () {
+                if (studyTime > 0) {
+                    studyTime--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timer);
+                    isRunning = false;
+                    alert("Time's up!");
+                    startPauseButton.textContent = 'Start';
+                }
+            }, 1000);
+        } else {
+            clearInterval(timer);
+            isRunning = false;
+            startPauseButton.textContent = 'Start';
+        }
+    }
+
+    function resetTimer() {
+        clearInterval(timer);
+        studyTime = 25 * 60; // Reset to 25 minutes
+        updateTimerDisplay();
+        isRunning = false;
+        startPauseButton.textContent = 'Start';
+    }
+
+    // Attach event listeners once DOM is fully loaded
+    startPauseButton.addEventListener('click', startPauseTimer);
+    resetButton.addEventListener('click', resetTimer);
+
+    // Initialize the timer display
+    updateTimerDisplay();
+});
+
+          </script>
+</body>
+</html>
