@@ -35,32 +35,7 @@
   </script>
 
 
-  <h2>{{ sub_name|upper }}</h2>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Unit</th>
-        <th>Topic</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for unit in all_units_of_given_subject %}
-      <tr>
-        <td>{{ unit.unit_name }}</td>
-        <td><a href="{{ unit.unit_file.url }}">{{ unit.unit_topic }}</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <ol>
-    {% if imp_questions %}
-    <li><a href="{{ imp_questions.question_file.url }}">IMP - QUESTIONS PDF</a></li>
-    {% endif %}
-  </ol>
-
-  
+  <!-- Removed Django-rendered units table and IMP Questions list for static GitHub Pages build -->
 <script>
   (function() {
     function stripTemplateTags(root) {
