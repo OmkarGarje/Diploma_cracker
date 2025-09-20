@@ -1,0 +1,40 @@
+{
+  "java": {
+    "units": [],
+    "imp_questions": "media/imp_questions/IMP_-_Java.pdf"
+  },
+  "javascript": {
+    "units": [
+      {
+        "unit_name": "Unit 4",
+        "unit_topic": "JavaScript Unit 4 Notes",
+        "unit_file": "media/unit_files/Unit-4_JS.pdf"
+      }
+    ],
+    "imp_questions": "media/imp_questions/IMP-JS.pdf"
+  },
+  "python": {
+    "units": [],
+    "imp_questions": "media/imp_questions/IMP_-_Python.pdf"
+  },
+  "c++": {
+    "units": [],
+    "imp_questions": "media/imp_questions/IMP_C.pdf"
+  },
+  "software testing": {
+    "units": [],
+    "imp_questions": "media/imp_questions/IMP_-_Software_Testing.pdf"
+  },
+  "operating system": {
+    "units": [],
+    "imp_questions": "media/imp_questions/IMP-_Operating_System.pdf"
+  },
+  "emerging trends in it": {
+    "units": [],
+    "imp_questions": "media/imp_questions/IMP_-_ETI.pdf"
+  },
+  "dcc": {
+    "units": [],
+    "imp_questions": "media/imp_questions/IMP_-_DCC.pdf"
+  }
+}

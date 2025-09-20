@@ -35,32 +35,100 @@
   </script>
 
 
-  <h2>{{ sub_name|upper }}</h2>
+  <h2 id="subject-title"></h2>
 
-  <table>
+  <div id="placeholder" style="margin: 1rem 0; color: #ccc;">
+    Select a subject from the Coding or Theory page. If you already selected one and still see this, content may be coming soon.
+  </div>
+
+  <table id="units-table" style="width: 100%; display: none;">
     <thead>
       <tr>
         <th>Unit</th>
         <th>Topic</th>
       </tr>
     </thead>
-    <tbody>
-      {% for unit in all_units_of_given_subject %}
-      <tr>
-        <td>{{ unit.unit_name }}</td>
-        <td><a href="{{ unit.unit_file.url }}">{{ unit.unit_topic }}</a></td>
-      </tr>
-      {% endfor %}
+    <tbody id="units-body">
     </tbody>
   </table>
 
-  <ol>
-    {% if imp_questions %}
-    <li><a href="{{ imp_questions.question_file.url }}">IMP - QUESTIONS PDF</a></li>
-    {% endif %}
-  </ol>
+  <div id="imp-container" style="margin-top: 1rem;"></div>
 
-  
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const rawSubject = (params.get('subject') || '').trim();
+      const subjectKey = rawSubject.toLowerCase();
+
+      const titleEl = document.getElementById('subject-title');
+      const placeholderEl = document.getElementById('placeholder');
+      const tableEl = document.getElementById('units-table');
+      const tbodyEl = document.getElementById('units-body');
+      const impEl = document.getElementById('imp-container');
+
+      if (!subjectKey) {
+        titleEl.textContent = 'Select a Subject';
+        return;
+      }
+
+      // Title in UPPERCASE similar to previous behavior
+      titleEl.textContent = rawSubject.toUpperCase();
+
+      fetch('data/subjects.json', { cache: 'no-store' })
+        .then(r => r.json())
+        .then(data => {
+          const entry = data[subjectKey];
+          if (!entry) {
+            placeholderEl.textContent = 'No data found for this subject. Content coming soon.';
+            return;
+          }
+
+          // Render units if available
+          if (Array.isArray(entry.units) && entry.units.length) {
+            tbodyEl.innerHTML = '';
+            entry.units.forEach(u => {
+              const tr = document.createElement('tr');
+              const td1 = document.createElement('td');
+              const td2 = document.createElement('td');
+              td1.textContent = u.unit_name || '';
+
+              if (u.unit_file) {
+                const a = document.createElement('a');
+                a.href = u.unit_file;
+                a.textContent = u.unit_topic || 'Open';
+                a.target = '_blank';
+                td2.appendChild(a);
+              } else {
+                td2.textContent = u.unit_topic || '';
+              }
+              tr.appendChild(td1);
+              tr.appendChild(td2);
+              tbodyEl.appendChild(tr);
+            });
+            tableEl.style.display = '';
+            placeholderEl.style.display = 'none';
+          }
+
+          // Render Important Questions link if available
+          if (entry.imp_questions) {
+            const a = document.createElement('a');
+            a.href = entry.imp_questions;
+            a.textContent = 'IMP - QUESTIONS PDF';
+            a.target = '_blank';
+            impEl.appendChild(a);
+          }
+
+          if (!(Array.isArray(entry.units) && entry.units.length) && !entry.imp_questions) {
+            placeholderEl.textContent = 'Content coming soon.';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          placeholderEl.textContent = 'Failed to load subject data.';
+        });
+    })();
+  </script>
+
 </body>
 
 </html>
